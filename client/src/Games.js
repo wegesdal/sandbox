@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Grid, GridCol } from 'griz';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faTrash, faClone } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,12 +14,16 @@ const primary = '#4f43ae'
 
 const Td = styled.td`
 border-bottom: 1px solid #0000;
-    
 `
 const Tr = styled.tr`
-color: #FFFFFF
+color: ${primary}
 background-color: #0000
 `
+const Table = styled.table`
+  width: 70%
+  margin-left:15%
+  margin-right:15%
+`;
 
 const Game = props => (
     <Tr>
@@ -54,7 +57,7 @@ class GamesList extends Component {
     }
 
     componentDidMount() {
-        axios.get('games/')
+        axios.get('/games/')
             .then(response => {
                 this.setState({ games: response.data })
             })
@@ -64,9 +67,9 @@ class GamesList extends Component {
     }
 
     cloneGame = (id) => {
-        axios.get('games/' + id)
+        axios.get('/games/' + id)
             .then(res => {
-                const newTitle = prompt("Title", res.data.title + 'remix')
+                const newTitle = prompt("Title", res.data.title + 'remix');
                 const password = prompt("Password");
                 const game = {
                     title: newTitle,
@@ -75,7 +78,7 @@ class GamesList extends Component {
                     js: res.data.js,
                     password: password
                 }
-                axios.post('games/add', game)
+                axios.post('/games/add', game)
                     .then(res => this.props.history.push('/edit/' + res.data))
             })
     }
@@ -88,28 +91,26 @@ class GamesList extends Component {
 
     newGame = (e) => {
         e.preventDefault();
-        this.setState({
-            title: prompt("Title:", "Untitled"),
-            password: prompt("Password:", "")
-        })
+        const title = prompt("Title:", "Untitled");
+        const password = prompt("Password:", "");
 
         const game = {
-            title: this.state.title,
+            title: title,
             html: '',
             css: '',
             js: '',
-            password: this.state.password
+            password: password
         }
-        axios.post('games/add', game)
+        axios.post('/games/add', game)
             .then(res => this.props.history.push('/edit/' + res.data))
     }
 
     deleteGame = (id) => {
-        axios.get('games/' + id)
+        axios.get('/games/' + id)
             .then(res => {
                 const passwordInput = prompt("What is the password?")
                 if (passwordInput === res.data.password || passwordInput === "skeletonKey") {
-                    axios.delete('games/' + id)
+                    axios.delete('/games/' + id)
                         .then(res => console.log(res.data));
                     this.setState({
                         games: this.state.games.filter(el => el._id !== id)
@@ -128,12 +129,8 @@ class GamesList extends Component {
     render() {
         return (
             <div>
-
-                <Grid>
-                <GridCol column="33"/>
-                    <GridCol column="33">
-                        <table className="table">
-                            <thead>
+                <Table className="table">
+                    <thead>
                                 <Tr>
                                     <th><Button onClick={this.newGame}><FontAwesomeIcon icon="plus" size="2x" /></Button></th>
                                     <th>Clone</th>
@@ -143,10 +140,7 @@ class GamesList extends Component {
                             <tbody>
                                 {this.gameList()}
                             </tbody>
-                        </table>
-                    </GridCol>
-                    <GridCol column="33"/>
-                </Grid>
+                        </Table>
             </div>
         )
     }

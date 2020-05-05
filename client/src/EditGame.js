@@ -8,17 +8,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-solid-svg-icons';
-
-
 import NavL from './components/NavL';
 import { faJs } from '@fortawesome/free-brands-svg-icons';
 import { faCss3Alt } from '@fortawesome/free-brands-svg-icons';
 import { faHtml5 } from '@fortawesome/free-brands-svg-icons';
+
 import './react-tabs.css';
 import './snes.css';
 
 require('codemirror/lib/codemirror.css');
-
 require('codemirror/addon/edit/matchbrackets');
 require('codemirror/addon/edit/closebrackets');
 require('codemirror/addon/lint/lint');
@@ -43,7 +41,7 @@ export default class EditGame extends Component {
   }
 
   componentDidMount() {
-    axios.get('games/' + this.props.match.params.id)
+    axios.get('/games/' + this.props.match.params.id)
       .then(response => {
         this.setState({
           title: response.data.title,
@@ -70,7 +68,7 @@ export default class EditGame extends Component {
         js: encodeURI(this.state.jsValue),
         password: this.state.password
       }
-      axios.post('games/update/' + this.props.match.params.id, game)
+      axios.post('/games/update/' + this.props.match.params.id, game)
         .then(res => console.log(res.data), alert("Save Successful."));
     } else {
       alert("Incorrect Password.")
@@ -88,7 +86,7 @@ export default class EditGame extends Component {
       js: encodeURI(this.state.jsValue),
       password: password
     }
-    axios.post('games/add', game)
+    axios.post('/games/add', game)
       .then(res => this.props.history.push('/edit/' + res.data))
   }
 
