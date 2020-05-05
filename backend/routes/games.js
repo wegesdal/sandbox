@@ -1,5 +1,5 @@
 const router = require('express').Router();
-let Game = require('../models/Game.model');
+let Game = require('backend/models/Game.model');
 
 router.route('/').get((req, res) => {
     Game.find()
