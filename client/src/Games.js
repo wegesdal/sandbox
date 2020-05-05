@@ -100,16 +100,16 @@ class GamesList extends Component {
             js: '',
             password: this.state.password
         }
-        axios.post('http://localhost:5000/games/add', game)
+        axios.post('games/add', game)
             .then(res => this.props.history.push('/edit/' + res.data))
     }
 
     deleteGame = (id) => {
-        axios.get('http://localhost:5000/games/' + id)
+        axios.get('games/' + id)
             .then(res => {
                 const passwordInput = prompt("What is the password?")
                 if (passwordInput === res.data.password || passwordInput === "skeletonKey") {
-                    axios.delete('http://localhost:5000/games/' + id)
+                    axios.delete('games/' + id)
                         .then(res => console.log(res.data));
                     this.setState({
                         games: this.state.games.filter(el => el._id !== id)

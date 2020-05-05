@@ -43,7 +43,7 @@ export default class EditGame extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/games/' + this.props.match.params.id)
+    axios.get('games/' + this.props.match.params.id)
       .then(response => {
         this.setState({
           title: response.data.title,
@@ -70,7 +70,7 @@ export default class EditGame extends Component {
         js: encodeURI(this.state.jsValue),
         password: this.state.password
       }
-      axios.post('http://localhost:5000/games/update/' + this.props.match.params.id, game)
+      axios.post('games/update/' + this.props.match.params.id, game)
         .then(res => console.log(res.data), alert("Save Successful."));
     } else {
       alert("Incorrect Password.")
@@ -88,7 +88,7 @@ export default class EditGame extends Component {
       js: encodeURI(this.state.jsValue),
       password: password
     }
-    axios.post('http://localhost:5000/games/add', game)
+    axios.post('games/add', game)
       .then(res => this.props.history.push('/edit/' + res.data))
   }
 
