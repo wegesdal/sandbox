@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const mongoose = require('mongoose');
+
+let Game = require('../models/Game.model');
 
 const Schema = mongoose.Schema;
 
@@ -13,7 +14,8 @@ const gameSchema = new Schema({
     timestamps: true,
 });
 
-const Game = mongoose.model('Game', gameSchema);
+const Game = mongoose.model('Game',gameSchema);
+
 
 router.route('/').get((req, res) => {
     Game.find()
