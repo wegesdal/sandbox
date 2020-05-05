@@ -3,18 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/runtime": "^7.9.6",
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-brands-svg-icons": "^5.12.0",
+    "@fortawesome/free-regular-svg-icons": "^5.12.0",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "@fortawesome/react-fontawesome": "^0.1.8",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.19.0",
+    "codemirror": "^5.49.2",
+    "griz": "^1.3.1",
+    "node-sass": "^4.14.1",
     "react": "^16.12.0",
+    "react-codemirror2": "^6.0.0",
+    "react-dev-utils": "10.0.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0"
+    "react-modal": "^3.11.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.4.1",
+    "react-tabs": "^3.1.0",
+    "react-tabs-styled-components": "0.0.4",
+    "styled-components": "^4.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node backend/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build"
   },
   "eslintConfig": {
     "extends": "react-app"

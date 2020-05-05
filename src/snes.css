@@ -1,0 +1,41 @@
+.cm-s-snes span.cm-meta { color: #EEE; }
+.cm-s-snes span.cm-keyword { line-height: 1em; font-weight: bold; color: #d5de73; }
+.cm-s-snes span.cm-atom { color: #FFF; }
+.cm-s-snes span.cm-number { color: #A3CE27; }
+.cm-s-snes span.cm-def { color: #EB8931; }
+.cm-s-snes span.cm-variable { color: #E06F8B; }
+.cm-s-snes span.cm-variable-2 { color: #E06F8B; }
+.cm-s-snes span.cm-variable-3, .cm-s-snes span.cm-type { color: #BE2633; }
+.cm-s-snes span.cm-property { color: #B2DCEF; }
+.cm-s-snes span.cm-operator { color: #000; }
+.cm-s-snes span.cm-comment { color: #908a99; }
+.cm-s-snes span.cm-string { color: #b5b6e4; }
+.cm-s-snes span.cm-string-2 { color: #b5b6e4; }
+.cm-s-snes span.cm-qualifier { color: #31A2F2; }
+.cm-s-snes span.cm-builtin { color: #B2DCEF; }
+.cm-s-snes span.cm-bracket { color: #cc7; }
+.cm-s-snes span.cm-tag { color: #d5de73; }
+.cm-s-snes span.cm-attribute { color: #B2DCEF; }
+.cm-s-snes span.cm-link { color: #219; }
+.cm-s-snes span.cm-error { color: #f00; }
+.cm-s-snes div.CodeMirror-selected {background: #DDAAAA !important;}
+
+.cm-s-snes .CodeMirror-activeline-background { background: #ff0000; }
+.cm-s-snes .CodeMirror-matchingbracket { outline:1px dotted red; color:white !important; }
+
+.cm-s-snes.CodeMirror {
+    line-height: 1.40em;
+    color: #211a21;
+    background-color: #4D4D4D;
+  }
+
+  .cm-s-snes .CodeMirror-gutters {
+    background: #cec9cc;
+    border-right: 1px solid #908a99;
+  }
+  
+  .cm-s-snes .CodeMirror-linenumber {
+    color: #211a21;
+    padding: 0 5px;
+
+      }
