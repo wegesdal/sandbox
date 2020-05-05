@@ -1,5 +1,19 @@
 const router = require('express').Router();
-let Game = require('backend/models/Game.model');
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+const gameSchema = new Schema({
+    title: { type: String, required: true },
+    html: { type: String, required: false},
+    css: { type: String, required: false },
+    js: { type: String, required: false },
+    password: { type: String, required: false }
+}, {
+    timestamps: true,
+});
+
+const Game = mongoose.model('Game', gameSchema);
 
 router.route('/').get((req, res) => {
     Game.find()
