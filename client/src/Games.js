@@ -54,7 +54,7 @@ class GamesList extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:5000/games/')
+        axios.get('games/')
             .then(response => {
                 this.setState({ games: response.data })
             })
@@ -64,7 +64,7 @@ class GamesList extends Component {
     }
 
     cloneGame = (id) => {
-        axios.get('http://localhost:5000/games/' + id)
+        axios.get('games/' + id)
             .then(res => {
                 const newTitle = prompt("Title", res.data.title + 'remix')
                 const password = prompt("Password");
@@ -75,7 +75,7 @@ class GamesList extends Component {
                     js: res.data.js,
                     password: password
                 }
-                axios.post('http://localhost:5000/games/add', game)
+                axios.post('games/add', game)
                     .then(res => this.props.history.push('/edit/' + res.data))
             })
     }
