@@ -1,7 +1,5 @@
 const router = require('express').Router();
 
-let Game = require('../models/Game.model');
-
 const Schema = mongoose.Schema;
 
 const gameSchema = new Schema({
