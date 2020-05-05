@@ -7,7 +7,7 @@ const Button = styled.button`
 font-family: 'IBM Plex Mono', monospace;
 
 margin-top: 1px;
-border-radius: 32px;
+border-radius: 6px;
 background: transparent;
 color: ${primary};
 border: 1px solid ${primary};
