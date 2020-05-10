@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { Controlled as CodeMirror } from 'react-codemirror2';
-import { Grid, GridCol } from 'griz';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import axios from 'axios';
-import Button from './components/Button.js';
+
+import { Controlled as CodeMirror } from 'react-codemirror2';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { faClone } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faJs, faCss3Alt, faHtml5 } from '@fortawesome/free-brands-svg-icons';
+
+import Button from './components/Button.js';
 import NavL from './components/NavL';
-import { faJs } from '@fortawesome/free-brands-svg-icons';
-import { faCss3Alt } from '@fortawesome/free-brands-svg-icons';
-import { faHtml5 } from '@fortawesome/free-brands-svg-icons';
+import Header from './components/Header.js';
+
+import Modal from './components/Modal.js';
+import FormSave from './components/FormSave.js';
 
 import './react-tabs.css';
 import './snes.css';
@@ -37,6 +38,8 @@ export default class EditGame extends Component {
       cssValue: '',
       jsValue: '',
       password: '',
+      showModal: false,
+      modalContent: null
     }
   }
 
@@ -57,10 +60,7 @@ export default class EditGame extends Component {
       })
   }
 
-  updateGame = (e) => {
-    e.preventDefault();
-    const passwordInput = prompt("What is the password?")
-    if (passwordInput === this.state.password || passwordInput === "skeletonKey") {
+  updateGame = () => {
       const game = {
         title: this.state.title,
         html: encodeURI(this.state.htmlValue),
@@ -69,10 +69,7 @@ export default class EditGame extends Component {
         password: this.state.password
       }
       axios.post('/games/update/' + this.props.match.params.id, game)
-        .then(res => console.log(res.data), alert("Save Successful."));
-    } else {
-      alert("Incorrect Password.")
-    }
+        .then(res => console.log(res.data), alert("Save Successful."), this.setState({show: false}));
   }
 
   cloneGame = (e) => {
@@ -105,16 +102,15 @@ export default class EditGame extends Component {
   };
 
   renderFrame = () => {
-
     const oldFrame = document.getElementById("output");
-    const oldFrameParent = oldFrame.parentNode;
-    oldFrameParent.removeChild(oldFrame);
+    const outputParent = oldFrame.parentNode;
 
+    outputParent.removeChild(oldFrame);
     const newFrame = document.createElement("iframe");
     newFrame.className = "embed-responsive-item";
     newFrame.id = "output";
 
-    oldFrameParent.appendChild(newFrame);
+    outputParent.appendChild(newFrame);
 
     const iframe_doc = newFrame.contentDocument;
     iframe_doc.open();
@@ -126,17 +122,27 @@ export default class EditGame extends Component {
     iframe_doc.close();
   };
 
+  showModal = (e) => {
+    this.setState({
+        show: !this.state.show,
+        modalContent: <FormSave onEnter={res => { this.updateGame() }} _id={this.props.match.params.id}/>
+    })
+}
+
   render() {
     return (
       <div>
-        <Grid gutterless>
-          <GridCol column="50">
+      <Header>{this.state.title}</Header>
+      <Modal onClose={this.showModal} show={this.state.show}>
+                    {this.state.modalContent}
+                </Modal>
 
-            <Tabs>
+            <Tabs defaultIndex={3} onSelect ={(index, lastIndex, event)=>{if(index===3){this.renderFrame()}}}>
               <TabList>
                 <Tab><FontAwesomeIcon icon={faHtml5} size="2x" /></Tab>
                 <Tab><FontAwesomeIcon icon={faCss3Alt} size="2x" /></Tab>
                 <Tab><FontAwesomeIcon icon={faJs} size="2x" /></Tab>
+                <Tab><FontAwesomeIcon icon={faPlay} size="2x" /></Tab>
               </TabList>
 
               <TabPanel>
@@ -189,20 +195,13 @@ export default class EditGame extends Component {
                   editorDidMount={this.setupEditors}
                 />
               </TabPanel>
-            </Tabs>
-          </GridCol>
-          <GridCol column="50">
-            <NavL>
-              <Button id="renderButton" onClick={this.renderFrame}><FontAwesomeIcon icon={faPlay} size="2x" /></Button>
-              <Button id="updateButton" onClick={this.updateGame}><FontAwesomeIcon icon={faSave} size="2x" /></Button>
-              <Button id="cloneButton" onClick={this.cloneGame}><FontAwesomeIcon icon={faClone} size="2x" /></Button>
+              <TabPanel forceRender={true}>
+              <NavL>
+              <Button id="updateButton" onClick={this.showModal}><FontAwesomeIcon icon={faSave} size="2x" /></Button>
             </NavL>
-            <div><iframe id="output" title="output" /></div>
-
-
-
-          </GridCol>
-        </Grid>
+            <div id="output-parent"><iframe id="output" title="output" /></div>
+              </TabPanel>
+            </Tabs>
       </div>
     );
   }

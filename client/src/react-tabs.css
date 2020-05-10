@@ -54,4 +54,6 @@
 
 .react-tabs__tab-panel--selected {
   display: block;
+  margin-left:-8px;
+  padding: 0px;
 }

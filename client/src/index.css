@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'Arcade';
+  src: local('Arcade'), url(./fonts/8-bit_Arcade_In.ttf) format('truetype');
+}

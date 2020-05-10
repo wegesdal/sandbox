@@ -14,6 +14,7 @@ import Games from './Games.js';
 import EditGame from './EditGame.js';
 import history from "./utils/history";
 
+
 const primary = '#4f43ae'
 const highlight = '#b5b6e4'
 
@@ -27,7 +28,7 @@ const SMLink = styled.a`
   }
 `;
 
-const Contact = styled.a`
+const LinkButton = styled.a`
 font-family: 'IBM Plex Mono', monospace;
 
 margin-top: 1px;
@@ -36,9 +37,9 @@ background: transparent;
 color: ${primary};
 border: 1px solid ${primary};
 margin: 0 1em;
-padding: 2.1em 1.4em 1.4em 1.4em;
+padding: 0.8rem 0.7rem 0.7rem 0.5rem;
 
-font-size: 12px;
+font-size: 0.5rem;
 
 &:hover {
   background: ${highlight};
@@ -48,25 +49,25 @@ font-size: 12px;
 `
 
 const Hero = styled.div`
-  padding: 1em 0em 6em 0em;
+  padding: 1rem 0rem 6rem 0rem;
   text-align: center;
 `
 
 const Navbar = styled.div`
   background: transparent;
   color: black;
-  padding: 2em 0em 0.5em 0em;
+  padding: 2rem 0rem 0.5rem 0rem;
   margin: 0;
 `
 
 function App() {
+  
   return (
     <div className="App">
       <Navbar>
-        <Contact href="/list"><FontAwesomeIcon icon={faList} size="2x" /></Contact>
-        <NavR><Contact href="mailto:william.egesdal@gmail.com"><FontAwesomeIcon icon={faPaperPlane} size="2x" /></Contact></NavR>
+        <LinkButton href="/list"><FontAwesomeIcon icon={faList} size="2x" /></LinkButton>
+        <NavR><LinkButton href="mailto:william.egesdal@gmail.com"><FontAwesomeIcon icon={faPaperPlane} size="2x" /></LinkButton></NavR>
       </Navbar>
-
       <Router history={history}>
         <Hero><Switch>
           <Route path="/list" component={Games} />
@@ -75,10 +76,10 @@ function App() {
 
       <center>
         <SMLink href="https://github.com/wegesdal">
-          <FontAwesomeIcon className="brand-icon" icon={faGithubSquare} size="4x" />
+          <FontAwesomeIcon className="brand-icon" icon={faGithubSquare} size="2x" />
         </SMLink>
         <SMLink href="https://www.linkedin.com/in/william-egesdal-732a7b69/">
-          <FontAwesomeIcon className="brand-icon" icon={faLinkedin} size="4x" />
+          <FontAwesomeIcon className="brand-icon" icon={faLinkedin} size="2x" />
         </SMLink>
 
       </center>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import './fonts/8-bit_Arcade_In.ttf';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

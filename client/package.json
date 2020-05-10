@@ -20,11 +20,11 @@
     "react-codemirror2": "^6.0.0",
     "react-dev-utils": "10.0.0",
     "react-dom": "^16.12.0",
-    "react-modal": "^3.11.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
     "react-tabs": "^3.1.0",
     "react-tabs-styled-components": "0.0.4",
+    "react-textfield": "0.0.6",
     "styled-components": "^4.4.1"
   },
   "scripts": {
