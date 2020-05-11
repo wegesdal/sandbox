@@ -48,23 +48,42 @@ router.route('/:id').get((req, res) => {
 });
 
 router.route('/:id').delete((req, res) => {
-    Game.findByIdAndDelete(req.params.id)
-    .then(() => res.json('Game deleted.'))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+    Game.findById(req.params.id)
+    .then(game => {
+        if (game.password == req.body.password) {
+            Game.findByIdAndDelete(req.params.id)
+            .then(() => res.json('0'))
+            .catch(err => res.status(400).json('Error: ' + err));
+
+        } else {
+            res.json('1')
+        }
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+
+
+            // Game.findByIdAndDelete(req.params.id)
+            //     .then(() => res.json('Game deleted.'))
+            //     .catch(err => res.status(400).json('Error: ' + err));
+
+})
 
 router.route('/update/:id').post((req, res) => {
     Game.findById(req.params.id)
     .then(game => {
-        game.title = req.body.title;
-        game.html = req.body.html;
-        game.css = req.body.css;
-        game.js = req.body.js;
-        game.password = req.body.password;
+        if (game.password == req.body.password) {
+            game.title = req.body.title;
+            game.html = req.body.html;
+            game.css = req.body.css;
+            game.js = req.body.js;
+            game.password = req.body.password;
 
-        game.save()
-        .then(() => res.json('Game updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+            game.save()
+            .then(() => res.json('Game updated!'))
+            .catch(err => res.status(400).json('Error: ' + err));
+        } else {
+            res.json('Incorrect password!')
+        }
     })
     .catch(err => res.status(400).json('Error: ' + err));
 })

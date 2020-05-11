@@ -91,20 +91,6 @@ class GamesList extends Component {
         })
     }
 
-    deleteGame = (id) => {
-        axios.get('/games/' + id)
-            .then(res => {
-                const passwordInput = prompt("What is the password?")
-                if (passwordInput === res.data.password || passwordInput === "skeletonKey") {
-                    axios.delete('/games/' + id)
-                        .then(res => console.log(res.data));
-                    this.setState({
-                        games: this.state.games.filter(el => el._id !== id)
-                    })
-                }
-            })
-    }
-
     showModal = (e) => {
         this.setState({
             show: !this.state.show
@@ -113,7 +99,7 @@ class GamesList extends Component {
 
     deleteGame = (id) => {
         this.setState({
-            modalContent: <FormDelete onEnter={res => {this.setState({games: this.state.games.filter(el => el._id !== id),show:false})}} _id={id}></FormDelete>,
+            modalContent: <FormDelete onEnter={res => { if (res.data == '0') { this.setState({ games: this.state.games.filter(el => el._id !== id), show: false })}}}  _id={id}></FormDelete>,
             show: true
         })
     }

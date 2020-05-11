@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import { withRouter } from 'react-router-dom'
+
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faPlay, faClone } from '@fortawesome/free-solid-svg-icons';
 import { faJs, faCss3Alt, faHtml5 } from '@fortawesome/free-brands-svg-icons';
 
 import Button from './components/Button.js';
@@ -13,6 +15,8 @@ import Header from './components/Header.js';
 
 import Modal from './components/Modal.js';
 import FormSave from './components/FormSave.js';
+
+import styled from 'styled-components';
 
 import './react-tabs.css';
 import './snes.css';
@@ -28,7 +32,9 @@ require('codemirror/mode/css/css.js');
 require('codemirror/mode/htmlmixed/htmlmixed.js')
 require('codemirror/mode/javascript/javascript.js');
 
-export default class EditGame extends Component {
+const W = styled.h1`color: white; font-family: Arcade`
+
+class EditGame extends Component {
   constructor(props) {
     super(props);
 
@@ -60,29 +66,27 @@ export default class EditGame extends Component {
       })
   }
 
-  updateGame = () => {
-      const game = {
-        title: this.state.title,
-        html: encodeURI(this.state.htmlValue),
-        css: encodeURI(this.state.cssValue),
-        js: encodeURI(this.state.jsValue),
-        password: this.state.password
-      }
-      axios.post('/games/update/' + this.props.match.params.id, game)
-        .then(res => console.log(res.data), alert("Save Successful."), this.setState({show: false}));
-  }
-
-  cloneGame = (e) => {
-    e.preventDefault();
-    const newTitle = prompt("Set Title", this.state.title + 'remix')
-    const password = prompt("Set Password");
+  updateGame = (pw) => {
     const game = {
-      title: newTitle,
+      title: this.state.title,
       html: encodeURI(this.state.htmlValue),
       css: encodeURI(this.state.cssValue),
       js: encodeURI(this.state.jsValue),
-      password: password
+      password: pw
     }
+    axios.post('/games/update/' + this.props.match.params.id, game)
+      .then(res => this.setState({ modalContent: <W>{res.data}</W> }));
+  }
+
+  cloneGame = (title, pw) => {
+    const game = {
+      title: title,
+      html: encodeURI(this.state.htmlValue),
+      css: encodeURI(this.state.cssValue),
+      js: encodeURI(this.state.jsValue),
+      password: pw
+    }
+    console.log(game)
     axios.post('/games/add', game)
       .then(res => this.props.history.push('/edit/' + res.data))
   }
@@ -122,87 +126,95 @@ export default class EditGame extends Component {
     iframe_doc.close();
   };
 
+  saveModal = (e) => {
+    this.setState({
+      show: !this.state.show,
+      modalContent: <FormSave onEnter={pw => { this.updateGame(pw) }} _id={this.props.match.params.id} />
+    })
+  }
+
   showModal = (e) => {
     this.setState({
-        show: !this.state.show,
-        modalContent: <FormSave onEnter={res => { this.updateGame() }} _id={this.props.match.params.id}/>
+      show: !this.state.show
     })
-}
+  }
 
   render() {
     return (
       <div>
-      <Header>{this.state.title}</Header>
-      <Modal onClose={this.showModal} show={this.state.show}>
-                    {this.state.modalContent}
-                </Modal>
+        <Header>{this.state.title}</Header>
+        <Modal onClose={this.showModal} show={this.state.show}>
+          {this.state.modalContent}
+        </Modal>
 
-            <Tabs defaultIndex={3} onSelect ={(index, lastIndex, event)=>{if(index===3){this.renderFrame()}}}>
-              <TabList>
-                <Tab><FontAwesomeIcon icon={faHtml5} size="2x" /></Tab>
-                <Tab><FontAwesomeIcon icon={faCss3Alt} size="2x" /></Tab>
-                <Tab><FontAwesomeIcon icon={faJs} size="2x" /></Tab>
-                <Tab><FontAwesomeIcon icon={faPlay} size="2x" /></Tab>
-              </TabList>
+        <Tabs defaultIndex={3} onSelect={(index, lastIndex, event) => { if (index === 3) { this.renderFrame() } }}>
+          <TabList>
+            <Tab><FontAwesomeIcon icon={faHtml5} size="2x" /></Tab>
+            <Tab><FontAwesomeIcon icon={faCss3Alt} size="2x" /></Tab>
+            <Tab><FontAwesomeIcon icon={faJs} size="2x" /></Tab>
+            <Tab><FontAwesomeIcon icon={faPlay} size="2x" /></Tab>
+          </TabList>
 
-              <TabPanel>
-                <CodeMirror
-                  value={this.state.htmlValue}
-                  options={{
-                    mode: 'htmlmixed',
-                    theme: 'snes',
-                    lineNumbers: true,
-                    viewportMargin: Infinity
-                  }}
+          <TabPanel>
+            <CodeMirror
+              value={this.state.htmlValue}
+              options={{
+                mode: 'htmlmixed',
+                theme: 'snes',
+                lineNumbers: true,
+                viewportMargin: Infinity
+              }}
 
-                  onBeforeChange={(editor, data, value) => {
-                    this.setState({ htmlValue: value });
-                  }}
-                />
-              </TabPanel>
-              <TabPanel>
-                <CodeMirror
-                  value={this.state.cssValue}
-                  options={{
-                    mode: 'css',
-                    theme: 'snes',
-                    lineNumbers: true,
-                    viewportMargin: Infinity
-                  }}
-                  onBeforeChange={(editor, data, value) => {
-                    this.setState({ cssValue: value });
-                  }}
-                />
-              </TabPanel>
-              <TabPanel>
-                <CodeMirror
-                  value={this.state.jsValue}
-                  options={{
-                    mode: 'javascript',
-                    theme: 'snes',
-                    lineNumbers: true,
-                    viewportMargin: Infinity,
-                    /* Addons */
-                    matchBrackets: true,
-                    autoCloseBrackets: true,
-                    gutters: ['CodeMirror-lint-markers'],
-                    lint: { esversion: 6 }
+              onBeforeChange={(editor, data, value) => {
+                this.setState({ htmlValue: value });
+              }}
+            />
+          </TabPanel>
+          <TabPanel>
+            <CodeMirror
+              value={this.state.cssValue}
+              options={{
+                mode: 'css',
+                theme: 'snes',
+                lineNumbers: true,
+                viewportMargin: Infinity
+              }}
+              onBeforeChange={(editor, data, value) => {
+                this.setState({ cssValue: value });
+              }}
+            />
+          </TabPanel>
+          <TabPanel>
+            <CodeMirror
+              value={this.state.jsValue}
+              options={{
+                mode: 'javascript',
+                theme: 'snes',
+                lineNumbers: true,
+                viewportMargin: Infinity,
+                /* Addons */
+                matchBrackets: true,
+                autoCloseBrackets: true,
+                gutters: ['CodeMirror-lint-markers'],
+                lint: { esversion: 6 }
 
-                  }}
-                  onBeforeChange={(editor, data, value) => {
-                    this.setState({ jsValue: value });
-                  }}
-                  editorDidMount={this.setupEditors}
-                />
-              </TabPanel>
-              <TabPanel forceRender={true}>
-              <NavL>
-              <Button id="updateButton" onClick={this.showModal}><FontAwesomeIcon icon={faSave} size="2x" /></Button>
+              }}
+              onBeforeChange={(editor, data, value) => {
+                this.setState({ jsValue: value });
+              }}
+              editorDidMount={this.setupEditors}
+            />
+          </TabPanel>
+          <TabPanel forceRender={true}>
+            <NavL>
+              <Button id="updateButton" onClick={this.saveModal}><FontAwesomeIcon icon={faSave} size="2x" /></Button>
             </NavL>
             <div id="output-parent"><iframe id="output" title="output" /></div>
-              </TabPanel>
-            </Tabs>
+          </TabPanel>
+        </Tabs>
       </div>
     );
   }
 }
+
+export default withRouter(EditGame);

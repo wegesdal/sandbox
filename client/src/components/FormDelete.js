@@ -12,15 +12,8 @@ class FormDelete extends React.Component {
 
     mySubmitHandler = (event) => {
         event.preventDefault();
-        axios.get('/games/' + this.props._id)
-            .then(res => {
-              console.log('statepw:' + this.state.password)
-                console.log('propspw:' + res.data.password)
-                if (this.state.password === res.data.password || this.state.password === "skeletonKey") {
-                    axios.delete('/games/' + this.props._id)
-                        .then(res => this.props.onEnter());
-                }
-            })
+        axios.delete('/games/' + this.props._id, {data: {password: this.state.password} })
+          .then(res => this.props.onEnter(res));
       }
 
     changePassword = (event) => {

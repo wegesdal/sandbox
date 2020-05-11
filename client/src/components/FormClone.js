@@ -12,6 +12,7 @@ class FormClone extends React.Component {
 
     mySubmitHandler = (event) => {
         event.preventDefault();
+        console.log(this.props._id)
         axios.get('/games/' + this.props._id)
             .then(res => {
               console.log(res.data.title)
