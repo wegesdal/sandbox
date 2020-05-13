@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom'
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faPlay, faClone } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faJs, faCss3Alt, faHtml5 } from '@fortawesome/free-brands-svg-icons';
 
 import Button from './components/Button.js';

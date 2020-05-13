@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import EnterButton from './EnterButton.js';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight }  from '@fortawesome/free-solid-svg-icons';

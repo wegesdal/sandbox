@@ -99,7 +99,7 @@ class GamesList extends Component {
 
     deleteGame = (id) => {
         this.setState({
-            modalContent: <FormDelete onEnter={res => { if (res.data == '0') { this.setState({ games: this.state.games.filter(el => el._id !== id), show: false })}}}  _id={id}></FormDelete>,
+            modalContent: <FormDelete onEnter={res => { if (res.data === '0') { this.setState({ games: this.state.games.filter(el => el._id !== id), show: false })}}}  _id={id}></FormDelete>,
             show: true
         })
     }
