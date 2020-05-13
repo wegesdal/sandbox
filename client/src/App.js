@@ -65,13 +65,13 @@ function App() {
   return (
     <div className="App">
       <Navbar>
-        <LinkButton href="/index"><FontAwesomeIcon icon={faList} size="2x" /></LinkButton>
+        <LinkButton href="/"><FontAwesomeIcon icon={faList} size="2x" /></LinkButton>
         <NavR><LinkButton href="mailto:william.egesdal@gmail.com"><FontAwesomeIcon icon={faPaperPlane} size="2x" /></LinkButton></NavR>
       </Navbar>
       <Router history={history}>
      
         <Hero><Switch>
-          <Route path="/index" component={Games} />
+          <Route exact path="/" component={Games} />
           <Route path="/edit/:id" component={EditGame} /></Switch></Hero>
       </Router>
 
