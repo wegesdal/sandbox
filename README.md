@@ -19,3 +19,9 @@ To start server run:
 npm run start
 ```
 
+You need a .env file in the root directory with the Mongo db URI in it:
+
+```
+ATLAS_URI=mongodb+srv://atlas:  ...
+```
+
